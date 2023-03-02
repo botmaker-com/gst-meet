@@ -1,5 +1,5 @@
 use minidom::{Element, NSChoice::Any};
-use xmpp_parsers::{
+pub use xmpp_parsers::{
   jingle_ssma::Semantics,
   ns::JINGLE_SSMA,
 };

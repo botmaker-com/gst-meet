@@ -26,7 +26,22 @@ To integrate gst-meet into your own application, add a Cargo dependency on `lib-
 
 ## Docker
 
-A `Dockerfile` is provided that uses AVStack-built Alpine APKs for gstreamer 1.20.
+A `Dockerfile` is provided that uses Gstreamer 1.20.
+
+### To build the image
+docker build -t tag-name .
+
+### To run the container starting the media resources
+sudo xhost +
+export DISPLAY=:0.0
+docker run -it --env DISPLAY=unix$DISPLAY --privileged  --volume /tmp/.X11-unix:/tmp/.X11-unix --entrypoint /bin/sh $IMAGE_ID
+
+#### To test video and sound with Gstremer
+
+gst-launch-1.0 videotestsrc ! videoconvert ! autovideosink
+
+gst-launch-1.0 playbin uri="https://opus-codec.org/static/examples/samples/music_orig.wav"
+
 
 ## Nix
 

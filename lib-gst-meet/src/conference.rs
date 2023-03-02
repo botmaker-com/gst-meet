@@ -243,7 +243,9 @@ impl JitsiConference {
     let iq = Iq::from_set(generate_id(), conference_stanza).with_to(focus);
     xmpp_connection.tx.send(iq.into()).await?;
 
+    debug!("conferences before await");
     rx.await?;
+    debug!("conferences after await");
 
     Ok(conference)
   }
@@ -552,7 +554,9 @@ impl StanzaFilter for JitsiConference {
         }
       },
       Idle => {
+        debug!("After Joined MUC: Idle block");
         if let Ok(iq) = Iq::try_from(element.clone()) {
+            println!("Idle block - iq:  {:?}", iq);
           match iq.payload {
             IqType::Get(element) => {
               if let Ok(query) = DiscoInfoQuery::try_from(element) {
@@ -908,6 +912,7 @@ impl StanzaFilter for JitsiConference {
           }
         }
         else if let Ok(presence) = Presence::try_from(element) {
+            println!("Idle block - Ok(presence) - presence: {:?}", presence);
           if let Jid::Full(from) = presence
             .from
             .as_ref()
